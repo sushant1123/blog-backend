@@ -1,9 +1,9 @@
 import express from "express";
 
+import { createCategory, getAllCategories } from "../controllers/categories.controller.js";
 const router = express.Router();
 
-router.get("/", (req, res) => {
-	res.json({ message: "from categories routes" });
-});
+router.post("/", createCategory);
+router.get("/", getAllCategories);
 
 export default router;
