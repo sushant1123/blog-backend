@@ -4,8 +4,8 @@ import Category from "../models/category.model.js";
 //TODO: if req contains multimedia
 export const createCategory = async (req, res) => {
 	try {
-		const { name } = req.body;
-
+		let { name } = req.body;
+		name = name.toLowerCase();
 		const newCategory = new Category({ name });
 
 		const category = await newCategory.save();
