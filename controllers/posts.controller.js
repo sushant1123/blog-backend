@@ -2,12 +2,17 @@ import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 
 //Create new post
-//TODO: if req contains multimedia then update
+//TODO: if req contains multimedia then update    : Done
 export const createPost = async (req, res) => {
 	try {
 		const { title, desc, username, categories } = req.body;
 
 		const obj = { title, desc, username, categories };
+
+		obj.postPic = req.file?.filename;
+
+		//check when integrating with frontend
+		obj.categories = JSON.parse(categories);
 
 		const postObj = new Post(obj);
 		const post = await postObj.save();
@@ -20,13 +25,18 @@ export const createPost = async (req, res) => {
 };
 
 //update post
-//TODO: if req contains multimedia then update
+//TODO: if req contains multimedia then update    : Done
 export const updatePost = async (req, res) => {
 	try {
 		const post = await Post.findById(req.params?.id);
 		if (post?._id) {
 			try {
 				if (post?.username === req.body?.username) {
+					req.body.postPic = req.file.filename;
+
+					//check when integrating with frontend
+					req.body.categories = JSON.parse(req.body.categories);
+
 					const updatedPost = await Post.findByIdAndUpdate(
 						req.params?.id,
 						{

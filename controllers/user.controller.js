@@ -3,13 +3,16 @@ import Post from "../models/post.model.js";
 import bcrypt from "bcrypt";
 
 //update
-//TODO : if profile picture updated, then update the url
+//TODO : if profile picture updated, then update the url   : Done
 export const updateUser = async (req, res) => {
 	try {
 		if (req.body?.userId === req.params?.id) {
 			if (req.body?.password) {
 				req.body.password = await bcrypt.hash(req.body?.password, 12);
 			}
+
+			//updated
+			req.body.profilePic = req.file?.filename;
 
 			const updatedUser = await User.findByIdAndUpdate(
 				req.params?.id,
