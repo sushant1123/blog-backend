@@ -12,7 +12,9 @@ export const createPost = async (req, res) => {
 		obj.postPic = req.file?.filename;
 
 		//check when integrating with frontend
-		obj.categories = JSON.parse(categories);
+		if (categories) {
+			obj.categories = JSON.parse(categories);
+		}
 
 		const postObj = new Post(obj);
 		const post = await postObj.save();
@@ -32,10 +34,14 @@ export const updatePost = async (req, res) => {
 		if (post?._id) {
 			try {
 				if (post?.username === req.body?.username) {
-					req.body.postPic = req.file.filename;
+					if (req.file?.filename) {
+						req.body.postPic = req.file.filename;
+					}
 
 					//check when integrating with frontend
-					req.body.categories = JSON.parse(req.body.categories);
+					if (req.body?.categories) {
+						req.body.categories = JSON.parse(req.body.categories);
+					}
 
 					const updatedPost = await Post.findByIdAndUpdate(
 						req.params?.id,
